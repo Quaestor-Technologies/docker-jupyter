@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 ARG REGISTRY=quay.io
 ARG OWNER=jupyter
-ARG BASE_CONTAINER=$REGISTRY/$OWNER/docker-stacks-foundation
+ARG BASE_CONTAINER=$OWNER/docker-stacks-foundation
 FROM $BASE_CONTAINER
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
@@ -36,10 +36,12 @@ USER ${NB_UID}
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
 WORKDIR /tmp
+RUN pip install jupyterhub
 RUN mamba install --yes \
     'jupyterlab' \
     'notebook' \
-    'jupyterhub' \
+    #'jupyterhub' \
+    'nodejs' \
     'nbclassic' && \
     jupyter server --generate-config && \
     mamba clean --all -f -y && \
