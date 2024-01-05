@@ -1,3 +1,25 @@
+This is a fork of Jupyter's main docker image. It has the following primary changes:
+
+1. Upgrades the base Python version to 3.12
+2. Installation of jupyterhub via PyPI. The conda-forge recipe has lagged behind with Python upgrades.
+3. Changes of some docker files to remove the registry for docker builds.
+
+To build the docker image, do:
+
+```
+docker buildx build images/docker-stacks-foundation --platform linux/amd64,linux/arm64 -t wesleykendall/docker-stacks-foundation --build-arg OWNER=wesleykendall --push
+docker buildx build --platform linux/amd64,linux/arm64 images/base-notebook -t wesleykendall/base-notebook --build-arg OWNER=wesleykendall --push
+docker buildx build --platform linux/amd64,linux/arm64 images/minimal-notebook -t wesleykendall/jupyter:3.12 --build-arg OWNER=wesleykendall --push
+```
+
+Once built, push it with:
+
+```
+docker push wesleykendall/jupyter:3.12
+```
+
+When new Python versions are released, one will need to rebase this fork with the upstream and push.
+
 # Jupyter Docker Stacks
 
 [![GitHub actions badge](https://github.com/jupyter/docker-stacks/actions/workflows/docker.yml/badge.svg)
